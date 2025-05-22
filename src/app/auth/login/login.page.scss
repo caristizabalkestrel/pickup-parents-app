@@ -1,0 +1,27 @@
+.container {
+  text-align: center;
+  margin-top: 40px;
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 30px;
+  padding: 0 10px;
+}
+
+.link-registrar {
+  margin-top: 15px;
+
+  a {
+    text-decoration: underline;
+    color: var(--ion-color-primary);
+    font-size: 0.9rem;
+  }
+}

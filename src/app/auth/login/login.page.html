@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="container">
+    <h2>Sistema para padres de familia</h2>
+    <form [formGroup]="form" (ngSubmit)="login()">
+      <ion-item>
+        <ion-label position="floating">CÉDULA</ion-label>
+        <ion-input type="number" inputmode="numeric" formControlName="cedula"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">CONTRASEÑA</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+
+      <ion-button expand="full" type="submit" class="ion-margin-top" [disabled]="form.invalid">Entrar</ion-button>
+
+      <ion-button expand="full" fill="outline" class="ion-margin-top" (click)="loginWithGoogle()">
+        <ion-icon name="logo-google" slot="start"></ion-icon>
+        Iniciar sesión con Google
+      </ion-button>
+
+      <div class="link-registrar">
+        <a routerLink="/register">Registrar</a>
+      </div>
+    </form>
+  </div>
+
+</ion-content>

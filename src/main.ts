@@ -5,6 +5,12 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 
+import{ initializeApp } from 'firebase/app';
+import { environment } from './environments/environment';
+
+// Initialize Firebase
+initializeApp(environment.firebaseConfig);
+
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
