@@ -1,0 +1,7 @@
+{
+  "name": "pickup-teachers-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
