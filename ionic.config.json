@@ -1,0 +1,7 @@
+{
+  "name": "pickup-parents-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
