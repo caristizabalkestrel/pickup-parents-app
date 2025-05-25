@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-chrome",
+      "request": "launch",
+      "name": "Ionic: serve & debug",
+      "url": "http://localhost:8100",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "ionic: serve"
+    }
+  ],
+  "compounds": []
+}
