@@ -2,9 +2,16 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/auth/auth.service';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { idCardOutline, lockClosedOutline, logInOutline, logoGoogle } from 'ionicons/icons';
+
+import { AuthService } from '../../../core/auth/auth.service';
+import { LoadingService } from '../../../core/loading/loading.service';
+import { ToastService } from '../../../core/toast/toast.service';
+import { LoadingOverlayComponent } from "../../../shared/loading-overlay/loading-overlay.component";
+
 
 @Component({
   selector: 'app-login',
@@ -14,8 +21,9 @@ import { IonicModule } from '@ionic/angular';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    IonicModule
-  ],
+    IonicModule,
+    LoadingOverlayComponent,
+],
 })
 export class LoginPage {
 
@@ -24,10 +32,18 @@ export class LoginPage {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    public loadingService: LoadingService,
+    private toastController: ToastController,
+    private toastService: ToastService,
   ) {
     // Registramos el icono de Google para que esté disponible en la plantilla
-    // addIcons({ logoGoogle });
+    addIcons({ // Registra los iconos que vas a usar
+      idCardOutline,
+      lockClosedOutline,
+      logInOutline,
+      logoGoogle
+    });
 
     this.form = this.fb.group({
       // Validamos 'identifier' como cédula: requerido y patrón numérico de al menos 5 dígitos
@@ -40,6 +56,8 @@ export class LoginPage {
    * Maneja el inicio de sesión solo con cédula y contraseña.
    */
   async login() {
+    this.loadingService.setLoading(true);
+
     const { cedula, password } = this.form.value;
 
     try {
@@ -49,13 +67,19 @@ export class LoginPage {
       if (loggedIn) {
         this.router.navigateByUrl('/home');
       } else {
-        // El mensaje de error ya es manejado por loginWithCedula, pero se puede añadir un fallback.
-        alert('Cédula o contraseña incorrecta. Por favor, inténtalo de nuevo.');
+        this.toastService.showError('Cédula o contraseña incorrecta. Por favor, inténtalo de nuevo.');
       }
     } catch (error: any) {
       console.error('Error al iniciar sesión con cédula:', error);
-      // Los errores específicos ya se manejan en el AuthService, aquí solo un mensaje general
-      alert('Ocurrió un error al iniciar sesión. Por favor, verifica tus credenciales.');
+      let errorMessage = 'Ocurrió un error al iniciar sesión. Por favor, verifica tus credenciales.';
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = 'Usuario no encontrado.';
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = 'Contraseña incorrecta.';
+      }
+      this.toastService.showError(errorMessage);
+    } finally{
+      this.loadingService.setLoading(false);
     }
   }
 
@@ -68,4 +92,5 @@ export class LoginPage {
   goToRegister() {
     this.router.navigateByUrl('/register');
   }
+
 }

@@ -1,33 +1,50 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Iniciar Sesión</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding background">
+  <ion-grid fixed>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center ion-text-white">Iniciar Sesión</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <form (ngSubmit)="login()" [formGroup]="form">
+              <ion-item>
+                <ion-label class="larger-label" position="floating">
+                  Cédula
+                  <ion-icon slot="end" name="id-card-outline"></ion-icon>
+                </ion-label>
+                <ion-input
+                  type="text"
+                  formControlName="cedula"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  required
+                  (ionInput)="onCedulaInput($event)"
+                ></ion-input>
+              </ion-item>
 
-<ion-content class="ion-padding">
-  <form (ngSubmit)="login()" [formGroup]="form">
-    <ion-item>
-      <ion-label position="floating">Cédula</ion-label>
-      <ion-input
-        type="text"
-        formControlName="cedula"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        required
-        (ionInput)="onCedulaInput($event)"
-      ></ion-input>
-    </ion-item>
+              <ion-item>
+                <ion-label class="larger-label" position="floating">
+                  Contraseña
+                  <ion-icon slot="end" name="lock-closed-outline"></ion-icon>
+                </ion-label>
+                <ion-input type="password" formControlName="password" required></ion-input>
+              </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" formControlName="password" required></ion-input>
-    </ion-item>
+              <ion-button expand="full" type="submit" class="ion-margin-top" [disabled]="form.invalid">
+                <ion-icon slot="start" name="log-in-outline"></ion-icon>
+                Iniciar Sesión
+              </ion-button>
+            </form>
 
-    <ion-button expand="full" type="submit" class="ion-margin-top" [disabled]="form.invalid">Iniciar Sesión</ion-button>
-  </form>
+            <ion-button expand="full" fill="clear" (click)="goToRegister()" class="ion-margin-top">
+              ¿No tienes cuenta? Regístrate aquí
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <ion-button expand="full" fill="clear" (click)="goToRegister()" class="ion-margin-top">
-    ¿No tienes cuenta? Regístrate aquí
-  </ion-button>
-
+  <app-loading-overlay></app-loading-overlay>
 </ion-content>

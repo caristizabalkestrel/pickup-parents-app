@@ -1,56 +1,86 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Registros de padres</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding background">
+  <ion-grid fixed>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center ion-text-white">Registros de padres</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <form (ngSubmit)="register()" [formGroup]="form">
+              <ion-item>
+                <ion-label position="floating">
+                  Nombre
+                  <ion-icon slot="end" name="person-outline"></ion-icon>
+                </ion-label>
+                <ion-input type="text" formControlName="nombre" required></ion-input>
+              </ion-item>
 
-<ion-content class="ion-padding">
-  <form (ngSubmit)="register()" [formGroup]="form">
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input type="text" formControlName="nombre" required></ion-input>
-    </ion-item>
+              <ion-item>
+                <ion-label position="floating">
+                  Apellido
+                  <ion-icon slot="end" name="person-outline"></ion-icon>
+                </ion-label>
+                <ion-input type="text" formControlName="apellido" required></ion-input>
+              </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Apellido</ion-label>
-      <ion-input type="text" formControlName="apellido" required></ion-input>
-    </ion-item>
+              <ion-item>
+                <ion-label position="floating">
+                  Cédula
+                  <ion-icon slot="end" name="id-card-outline"></ion-icon>
+                </ion-label>
+                <ion-input
+                  type="text"
+                  formControlName="cedula"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  required
+                  (ionInput)="onCedulaInput($event)"
+                ></ion-input>
+              </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Cédula</ion-label>
-      <ion-input
-        type="text"
-        formControlName="cedula"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        required
-        (ionInput)="onCedulaInput($event)"
-      ></ion-input>
-    </ion-item>
+              <ion-item>
+                <ion-label position="floating">
+                  Celular
+                  <ion-icon slot="end" name="call-outline"></ion-icon>
+                </ion-label>
+                <ion-input
+                  type="tel"
+                  formControlName="celular"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  required
+                  (ionInput)="onCelularInput($event)"
+                ></ion-input>
+              </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Celular</ion-label>
-      <ion-input
-        type="tel"
-        formControlName="celular"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        required
-        (ionInput)="onCelularInput($event)"
-      ></ion-input>
-    </ion-item>
+              <ion-item>
+                <ion-label position="floating">
+                  Correo
+                  <ion-icon slot="end" name="mail-outline"></ion-icon>
+                </ion-label>
+                <ion-input type="email" formControlName="email" required></ion-input>
+              </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Correo</ion-label>
-      <ion-input type="email" formControlName="email" required></ion-input>
-    </ion-item>
+              <ion-item>
+                <ion-label position="floating">
+                  Contraseña
+                  <ion-icon slot="end" name="lock-closed-outline"></ion-icon>
+                </ion-label>
+                <ion-input type="password" formControlName="password" required></ion-input>
+              </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" formControlName="password" required></ion-input>
-    </ion-item>
+              <ion-button expand="full" type="submit" class="ion-margin-top" [disabled]="form.invalid">
+                <ion-icon slot="start" name="person-add-outline"></ion-icon>
+                Registrar
+              </ion-button>
+              <ion-button expand="full" fill="clear" (click)="goToLogin()" class="ion-margin-top">¿Ya tienes cuenta? Inicia sesión aquí</ion-button>
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-    <ion-button expand="full" type="submit" class="ion-margin-top" [disabled]="form.invalid">Registrar</ion-button>
-    <ion-button expand="full" fill="clear" (click)="goToLogin()" class="ion-margin-top">Volver al Login</ion-button>
-  </form>
+  <app-loading-overlay></app-loading-overlay>
 </ion-content>

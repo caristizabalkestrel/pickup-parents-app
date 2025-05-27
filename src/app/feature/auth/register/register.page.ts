@@ -3,7 +3,11 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { addIcons } from 'ionicons';
+import { personOutline, idCardOutline, callOutline, mailOutline, lockClosedOutline, personAddOutline } from 'ionicons/icons'; // Importa los iconos
 import { AuthService } from '../../../core/auth/auth.service';
+import { LoadingService } from '../../../core/loading/loading.service';
+import { LoadingOverlayComponent } from "../../../shared/loading-overlay/loading-overlay.component";
 
 @Component({
   selector: 'app-register',
@@ -11,10 +15,11 @@ import { AuthService } from '../../../core/auth/auth.service';
   styleUrls: ['./register.page.scss'],
   standalone: true,
   imports: [
-    IonicModule, // Solo este para Ionic
+    IonicModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    LoadingOverlayComponent,
   ]
 })
 export class RegisterPage {
@@ -24,8 +29,19 @@ export class RegisterPage {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    public loadingService: LoadingService,
   ) {
+
+    addIcons({ // Registra los iconos
+      personOutline,
+      idCardOutline,
+      callOutline,
+      mailOutline,
+      lockClosedOutline,
+      personAddOutline
+    });
+
     this.form = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       apellido: ['', [Validators.required, Validators.minLength(3)]], // Agregado el campo 'apellido'
@@ -41,6 +57,9 @@ export class RegisterPage {
    * Registra el usuario con Firebase Auth y guarda sus datos en Firestore.
    */
   async register() {
+
+    this.loadingService.setLoading(true);
+
     // Obtiene los valores del formulario, incluyendo 'apellido'
     const {
       nombre,
@@ -90,6 +109,8 @@ export class RegisterPage {
         errorMessage = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.';
       }
       alert(errorMessage);
+    } finally {
+      this.loadingService.setLoading(false);
     }
   }
 

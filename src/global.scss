@@ -25,13 +25,33 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+body {
+  --ion-background-color: transparent !important; /* Asegura que el color de fondo de Ionic no opaque tu imagen */
+  background: rgba(0, 0, 0, 0.7) url('/assets/background.png') no-repeat center center fixed;
+  background-size: cover;
+}
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+ion-content {
+  --background: transparent !important; /* Asegura que el fondo del ion-content sea transparente */
+}
+
+ion-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ejemplo de sombra */
+  background-color: white; /* Establece el fondo de la tarjeta a blanco */
+  border-radius: 16px;
+}
+
+ion-card-header {
+  --background: var(--ion-color-primary); /* Ejemplo de color de fondo del header */
+  color: white;
+}
+
+ion-card-title {
+  font-weight: bold;
+  color: white; /* Establece el color del texto a blanco */
+  font-size: 1.5em; /* Ejemplo para aumentar el tamaño de la letra */
+}
+
+.larger-label {
+  font-size: 1.2em; /* Ajusta el tamaño según necesites */
+}
