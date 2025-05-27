@@ -1,9 +1,12 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './core/auth/auth.guard';
+import { NoAuthGuard } from './core/auth/no-auth.guard';
 
 export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    canActivate: [AuthGuard]
   },
   {
     path: '',
@@ -12,18 +15,22 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    loadComponent: () => import('./feature/auth/login/login.page').then( m => m.LoginPage)
+    loadComponent: () => import('./feature/auth/login/login.page').then( m => m.LoginPage),
+    canActivate: [NoAuthGuard]
   },
   {
     path: 'register',
-    loadComponent: () => import('./feature/auth/register/register.page').then( m => m.RegisterPage)
+    loadComponent: () => import('./feature/auth/register/register.page').then( m => m.RegisterPage),
+    canActivate: [NoAuthGuard]
   },
   {
     path: 'students',
-    loadComponent: () => import('./feature/students/students.page').then( m => m.StudentsPage)
+    loadComponent: () => import('./feature/students/students.page').then( m => m.StudentsPage),
+    canActivate: [AuthGuard]
   },
   {
     path: 'parets',
-    loadComponent: () => import('./feature/parets/parets.page').then( m => m.ParetsPage)
+    loadComponent: () => import('./feature/parets/parets.page').then( m => m.ParetsPage),
+    canActivate: [AuthGuard]
   },
 ];

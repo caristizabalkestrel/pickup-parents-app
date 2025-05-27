@@ -18,6 +18,7 @@ import { AuthService } from '../../../core/auth/auth.service';
   ]
 })
 export class RegisterPage {
+
   form: FormGroup;
 
   constructor(
@@ -43,7 +44,12 @@ export class RegisterPage {
     // Obtiene los valores del formulario, incluyendo 'apellido'
     const {
       nombre,
-       apellido, cedula, celular, email, password } = this.form.value;
+      apellido,
+      cedula,
+      celular,
+      email,
+      password
+    } = this.form.value;
 
     try {
       // 1. Registra el usuario en Firebase Authentication
@@ -55,13 +61,13 @@ export class RegisterPage {
         // 2. Guarda la relación cédula-email en la colección 'users' (para el login con cédula)
         await this.authService.saveUserCedulaEmail(userId, cedula, email);
 
-        // 3. Guarda la información completa del padre en la colección 'padres', incluyendo 'apellido'
+        // 3. Guarda la información completa del padre en la colección 'padres'
         await this.authService.saveParentProfile(userId, {
           nombre,
-          apellido, // Pasamos el apellido
+          apellido,
           cedula,
           celular,
-          correo: email // Usamos 'correo' para consistencia con la imagen
+          correo: email
         });
 
         // Si todo es exitoso, navega a la página principal
@@ -87,15 +93,32 @@ export class RegisterPage {
     }
   }
 
+  /**
+   * Maneja el evento de entrada en el campo de celular.
+   * Permite solo números y valida el formato.
+   * @param event El evento de entrada del campo de celular.
+   */
   onCelularInput(event: any): void {
     // Optionally, you can restrict input to numbers only
     const input = event.target as HTMLInputElement;
     input.value = input.value.replace(/[^0-9]/g, '');
   }
 
+  /**
+   * Maneja el evento de entrada en el campo de cédula.
+   * Permite solo números y valida el formato.
+   * @param event El evento de entrada del campo de cédula.
+   */
   onCedulaInput(event: any): void {
     // Optionally, add logic to filter or format the input
     const input = event.target as HTMLInputElement;
     input.value = input.value.replace(/[^0-9]/g, '');
+  }
+
+  /**
+   * Navega a la página de inicio de sesión.
+   */
+  goToLogin() {
+    this.router.navigateByUrl('/login');
   }
 }

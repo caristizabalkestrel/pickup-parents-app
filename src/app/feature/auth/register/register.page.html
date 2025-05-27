@@ -51,6 +51,6 @@
     </ion-item>
 
     <ion-button expand="full" type="submit" class="ion-margin-top" [disabled]="form.invalid">Registrar</ion-button>
-    <ion-button expand="full" fill="clear" routerLink="/login">Volver al Login</ion-button>
+    <ion-button expand="full" fill="clear" (click)="goToLogin()" class="ion-margin-top">Volver al Login</ion-button>
   </form>
 </ion-content>

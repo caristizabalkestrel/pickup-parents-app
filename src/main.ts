@@ -15,6 +15,9 @@ import { environment } from './environments/environment';
 // Initialize Firebase
 initializeApp(environment.firebaseConfig);
 
+import './app/core/auth/auth.guard';
+import './app/core/auth/no-auth.guard';
+
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
