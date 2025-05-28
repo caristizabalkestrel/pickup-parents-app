@@ -1,13 +1,19 @@
 import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
+
 import { addIcons } from 'ionicons';
-import { personOutline, idCardOutline, callOutline, mailOutline, lockClosedOutline, personAddOutline } from 'ionicons/icons'; // Importa los iconos
-import { AuthService } from '../../../core/auth/auth.service';
-import { LoadingService } from '../../../core/loading/loading.service';
-import { LoadingOverlayComponent } from "../../../shared/loading-overlay/loading-overlay.component";
+import { personOutline, idCardOutline, callOutline, mailOutline, lockClosedOutline, personAddOutline } from 'ionicons/icons';
+
+import { AuthService } from 'src/app/core/auth/service/auth.service';
+import { LoadingService } from 'src/app/core/loading/loading.service';
+import { ToastService } from 'src/app/core/toast/toast.service';
+import { LoadingOverlayComponent } from "src/app/shared/loading-overlay/loading-overlay.component";
+import { ParentProfile } from 'src/app/core/auth/models/parent-profile.model';
+import { SessionService } from 'src/app/core/session/session.service';
+
 
 @Component({
   selector: 'app-register',
@@ -31,6 +37,8 @@ export class RegisterPage {
     private authService: AuthService,
     private router: Router,
     public loadingService: LoadingService,
+    private toastService: ToastService,
+    private sessionService: SessionService
   ) {
 
     addIcons({ // Registra los iconos
@@ -81,19 +89,26 @@ export class RegisterPage {
         await this.authService.saveUserCedulaEmail(userId, cedula, email);
 
         // 3. Guarda la información completa del padre en la colección 'padres'
-        await this.authService.saveParentProfile(userId, {
+        const parentProfile: ParentProfile = {
           nombre,
           apellido,
           cedula,
           celular,
           correo: email
-        });
+        };
+
+        await this.authService.saveParentProfile(userId, parentProfile);
+        if (parentProfile) {
+          // Guarda el objeto tipado en la sesión
+          this.sessionService.setParentProfile(parentProfile as ParentProfile);
+        }
 
         // Si todo es exitoso, navega a la página principal
         this.router.navigateByUrl('/home');
+        this.toastService.showSuccess('Registro exitoso. Bienvenido! ' + nombre.toUpperCase());
+        
       } else {
-        // En caso de que no se obtenga el UID del usuario (raro si registerWithEmailAndPassword no lanzó error)
-        alert('Error al registrar el usuario: No se pudo obtener el ID de usuario.');
+        this.toastService.showError('Error al registrar el usuario: No se pudo obtener el ID de usuario.');
       }
     } catch (error: any) {
       // Captura y muestra errores durante el registro o guardado en Firestore
@@ -108,7 +123,7 @@ export class RegisterPage {
       } else if (error.code === 'auth/weak-password') {
         errorMessage = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.';
       }
-      alert(errorMessage);
+      this.toastService.showError(errorMessage);
     } finally {
       this.loadingService.setLoading(false);
     }

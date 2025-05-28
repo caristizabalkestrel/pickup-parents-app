@@ -1,16 +1,19 @@
-// login.page.ts
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { IonicModule, ToastController } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
+import { getAuth } from '@angular/fire/auth';
+
 import { addIcons } from 'ionicons';
 import { idCardOutline, lockClosedOutline, logInOutline, logoGoogle } from 'ionicons/icons';
 
-import { AuthService } from '../../../core/auth/auth.service';
-import { LoadingService } from '../../../core/loading/loading.service';
-import { ToastService } from '../../../core/toast/toast.service';
-import { LoadingOverlayComponent } from "../../../shared/loading-overlay/loading-overlay.component";
+import { AuthService } from 'src/app/core/auth/service/auth.service';
+import { LoadingService } from 'src/app/core/loading/loading.service';
+import { ToastService } from 'src/app/core/toast/toast.service';
+import { ParentProfile } from 'src/app/core/auth/models/parent-profile.model';
+import { SessionService } from 'src/app/core/session/session.service';
+import { LoadingOverlayComponent } from "src/app/shared/loading-overlay/loading-overlay.component";
 
 
 @Component({
@@ -34,8 +37,8 @@ export class LoginPage {
     private authService: AuthService,
     private router: Router,
     public loadingService: LoadingService,
-    private toastController: ToastController,
     private toastService: ToastService,
+    private sessionService: SessionService
   ) {
     // Registramos el icono de Google para que esté disponible en la plantilla
     addIcons({ // Registra los iconos que vas a usar
@@ -65,7 +68,18 @@ export class LoginPage {
       const loggedIn = await this.authService.loginWithCedula(cedula, password);
 
       if (loggedIn) {
+        // Obtener UID del usuario autenticado
+        const auth = getAuth();
+        const user = auth.currentUser;;
+        if (user) {
+          const parentProfile = await this.authService.getParentProfile(user.uid);
+          if (parentProfile) {
+            // Guarda el objeto tipado en la sesión
+            this.sessionService.setParentProfile(parentProfile as ParentProfile);
+          }
+        }
         this.router.navigateByUrl('/home');
+        this.toastService.showSuccess('Bienvenido! ' + (this.sessionService.getParentProfile()?.nombre?.toUpperCase() || 'Usuario'));
       } else {
         this.toastService.showError('Cédula o contraseña incorrecta. Por favor, inténtalo de nuevo.');
       }

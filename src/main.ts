@@ -19,8 +19,8 @@ import { LoadingService } from './app/core/loading/loading.service';
 // Initialize Firebase
 initializeApp(environment.firebaseConfig);
 
-import './app/core/auth/auth.guard';
-import './app/core/auth/no-auth.guard';
+import './app/core/auth/guard/auth.guard';
+import './app/core/auth/guard/no-auth.guard';
 
 bootstrapApplication(AppComponent, {
   providers: [

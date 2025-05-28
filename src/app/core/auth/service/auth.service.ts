@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 // Importaciones de Firebase Auth
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from '@angular/fire/auth';
 // Importaciones de Firestore
-import { Firestore, collection, query, where, getDocs, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, getDocs, doc, setDoc, getDoc } from '@angular/fire/firestore';
+import { ParentProfile } from '../models/parent-profile.model';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +58,7 @@ export class AuthService {
    * @param userId El UID (User ID) del usuario de Firebase Auth.
    * @param parentData Un objeto con los datos del padre (nombre, apellido, cedula, celular, correo).
    */
-  async saveParentProfile(userId: string, parentData: { nombre: string, apellido: string, cedula: string, celular: string, correo: string }): Promise<void> {
+  async saveParentProfile(userId: string, parentData: ParentProfile): Promise<void> {
     try {
       // Obtiene una referencia a la colección 'padres'
       const padresRef = collection(this.firestore, 'padres');
@@ -110,40 +111,6 @@ export class AuthService {
   }
 
   /**
-   * Inicia sesión utilizando la autenticación de Google (mediante un popup).
-   * @returns Una promesa que resuelve a `true` si el inicio de sesión es exitoso, `false` en caso contrario.
-   */
-  async loginWithGoogle(): Promise<boolean> {
-    try {
-      const provider = new GoogleAuthProvider();
-      // Abre una ventana emergente para que el usuario inicie sesión con su cuenta de Google
-      const result = await signInWithPopup(this.auth, provider);
-
-      // Opcional: Guarda información adicional del usuario de Google en la colección 'users' de Firestore
-      const user = result.user;
-      const usersCollectionRef = collection(this.firestore, 'users');
-      const userDocRef = doc(usersCollectionRef, user.uid);
-
-      // Guarda el email y nombre visible del usuario de Google.
-      // Usamos merge: true para no sobrescribir si el documento ya existe (ej. si el usuario ya se había registrado con cédula).
-      await setDoc(userDocRef, {
-        email: user.email,
-        displayName: user.displayName || null, // Nombre que Google proporciona
-        authProvider: 'google' // Campo para indicar el proveedor de autenticación
-      }, { merge: true });
-
-      // Si necesitas guardar el perfil completo del padre (nombre, apellido, celular) para usuarios de Google,
-      // deberías añadir una lógica aquí para pedir esa información después del primer inicio de sesión con Google,
-      // o redirigirlos a una página de "completar perfil". Por ahora, solo se guarda en 'users'.
-
-      return true; // Inicio de sesión con Google exitoso
-    } catch (error: any) {
-      console.error('Error al iniciar sesión con Google:', error);
-      throw error; // Propaga el error
-    }
-  }
-
-  /**
    * Cierra la sesión del usuario actual en Firebase Authentication.
    */
   async logout(): Promise<void> {
@@ -151,6 +118,33 @@ export class AuthService {
       await signOut(this.auth);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
+    }
+  }
+
+  /**
+   * Obtiene el perfil del padre desde Firestore por UID.
+   */
+  async getParentProfile(userId: string): Promise<ParentProfile | null> {
+    try {
+      const docRef = doc(this.firestore, 'padres', userId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        // Asegura el parseo a la interfaz ParentProfile
+        const profile: ParentProfile = {
+          nombre: data['nombre'] ?? '',
+          apellido: data['apellido'] ?? '',
+          cedula: data['cedula'] ?? '',
+          celular: data['celular'] ?? '',
+          correo: data['correo'] ?? ''
+        };
+        return profile;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error al obtener el perfil del padre:', error);
+      return null;
     }
   }
 }

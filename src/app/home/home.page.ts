@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton } from '@ionic/angular/standalone';
-import { AuthService } from '../core/auth/auth.service';
+import { AuthService } from '../core/auth/service/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
