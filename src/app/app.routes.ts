@@ -6,7 +6,22 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'parets',
+        pathMatch: 'full'
+      },
+      {
+        path: 'students',
+        loadComponent: () => import('./feature/students/students.page').then( m => m.StudentsPage),
+      },
+      {
+        path: 'parets',
+        loadComponent: () => import('./feature/parets/parets.page').then( m => m.ParetsPage),
+      },
+    ]
   },
   {
     path: '',
@@ -23,14 +38,5 @@ export const routes: Routes = [
     loadComponent: () => import('./feature/auth/register/register.page').then( m => m.RegisterPage),
     canActivate: [NoAuthGuard]
   },
-  {
-    path: 'students',
-    loadComponent: () => import('./feature/students/students.page').then( m => m.StudentsPage),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'parets',
-    loadComponent: () => import('./feature/parets/parets.page').then( m => m.ParetsPage),
-    canActivate: [AuthGuard]
-  },
+
 ];

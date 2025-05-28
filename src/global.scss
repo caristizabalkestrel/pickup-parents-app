@@ -27,12 +27,8 @@
 
 body {
   --ion-background-color: transparent !important; /* Asegura que el color de fondo de Ionic no opaque tu imagen */
-  background: rgba(0, 0, 0, 0.7) url('/assets/background.png') no-repeat center center fixed;
+  background: url('/assets/background.png') no-repeat center center fixed;
   background-size: cover;
-}
-
-ion-content {
-  --background: transparent !important; /* Asegura que el fondo del ion-content sea transparente */
 }
 
 ion-card {

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { getAuth } from '@angular/fire/auth';
+import { getAuth, Auth } from '@angular/fire/auth';
 
 import { addIcons } from 'ionicons';
 import { idCardOutline, lockClosedOutline, logInOutline, logoGoogle } from 'ionicons/icons';
@@ -26,11 +26,12 @@ import { LoadingOverlayComponent } from "src/app/shared/loading-overlay/loading-
     ReactiveFormsModule,
     IonicModule,
     LoadingOverlayComponent,
-],
+  ],
 })
 export class LoginPage {
 
   form: FormGroup;
+  auth: Auth;
 
   constructor(
     private fb: FormBuilder,
@@ -40,8 +41,8 @@ export class LoginPage {
     private toastService: ToastService,
     private sessionService: SessionService
   ) {
-    // Registramos el icono de Google para que esté disponible en la plantilla
-    addIcons({ // Registra los iconos que vas a usar
+    this.auth = getAuth(); // Inicializa la instancia de Auth en el constructor
+    addIcons({ // Registra los iconos que se va a usar
       idCardOutline,
       lockClosedOutline,
       logInOutline,
@@ -68,9 +69,8 @@ export class LoginPage {
       const loggedIn = await this.authService.loginWithCedula(cedula, password);
 
       if (loggedIn) {
-        // Obtener UID del usuario autenticado
-        const auth = getAuth();
-        const user = auth.currentUser;;
+        // Usamos la instancia de auth que ya tenemos en la propiedad de la clase
+        const user = this.auth.currentUser;;
         if (user) {
           const parentProfile = await this.authService.getParentProfile(user.uid);
           if (parentProfile) {
