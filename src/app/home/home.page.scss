@@ -13,3 +13,8 @@ ion-button {
 ion-footer ion-button {
   --border-radius: 8px;
 }
+
+/* Compensación para el toolbar del padre */
+ion-content.ion-padding-top-safe-area {
+  --padding-top: calc(var(--ion-safe-area-top, 0px) + var(--ion-toolbar-height, 56px));
+}

@@ -1,7 +1,60 @@
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">parets</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding background ion-padding-top-safe-area">
+  <ion-grid fixed>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="6">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center ion-text-white">Ubicación del Vehículo</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div *ngIf="showPickupForm && hasRegisteredStudents" [formGroup]="form">
+              <ion-item lines="none">
+                <ion-label class="larger-label">Selecciona tu Carril:</ion-label>
+              </ion-item>
+
+              <ion-radio-group formControlName="carril" class="ion-padding-top">
+                <ion-item lines="none">
+                  <ion-label>Carril 1</ion-label>
+                  <ion-radio value="carril-1"></ion-radio>
+                </ion-item>
+                <ion-item lines="none">
+                  <ion-label>Carril 2</ion-label>
+                  <ion-radio value="carril-2"></ion-radio>
+                </ion-item>
+                <ion-item lines="none">
+                  <ion-label>Carril 3</ion-label>
+                  <ion-radio value="carril-3"></ion-radio>
+                  </ion-item>
+              </ion-radio-group>
+
+              <ion-button expand="full" (click)="onLlegue()" class="ion-margin-top" color="light-blue" fill="solid" [disabled]="!form.get('carril')?.valid">
+                <ion-icon slot="start" name="car-outline"></ion-icon>
+                Llegue
+              </ion-button>
+            </div>
+
+            <div *ngIf="showWaitingMessage" class="ion-text-center ion-padding">
+              <h2 class="waiting-message">Espera un momento mientras vienen tus hijos, un profesor los estará acompañando</h2>
+              <ion-button expand="full" (click)="onListo()" class="ion-margin-top" color="success" fill="solid">
+                <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+                Listo
+              </ion-button>
+            </div>
+
+            <div *ngIf="!hasRegisteredStudents && !showWaitingMessage" class="ion-text-center ion-padding">
+              <h2 class="no-students-message">Parece que aún no tienes hijos registrados.</h2>
+              <p>Por favor, registra a tus hijos para poder usar el sistema de recogida.</p>
+              <ion-button expand="full" (click)="goToStudents()" class="ion-margin-top" color="primary" fill="solid">
+                <ion-icon slot="start" name="school-outline"></ion-icon>
+                Registrar Hijos
+              </ion-button>
+            </div>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <app-loading-overlay></app-loading-overlay>
 </ion-content>

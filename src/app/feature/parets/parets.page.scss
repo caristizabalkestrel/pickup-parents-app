@@ -1,0 +1,160 @@
+// Estilos para el contenedor del formulario
+.form-container {
+  padding: 16px;
+  background-color: white; // Fondo blanco para el formulario
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; // Espacio entre el formulario y la lista
+}
+
+// Estilos para el contenedor de la lista de estudiantes
+.students-list-container {
+  padding: 16px;
+  background-color: white; // Fondo blanco para la lista
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    text-align: center;
+    color: var(--ion-color-dark);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+  }
+
+  .students-list {
+    background: transparent; // Asegura que el fondo de la lista sea transparente para ver el contenedor
+    padding: 0; // Elimina el padding por defecto de ion-list
+  }
+
+  .list-header {
+    background-color: var(--ion-color-light-gray); // Fondo para el encabezado de la lista
+    font-weight: bold;
+    color: var(--ion-color-dark);
+    border-bottom: 1px solid var(--ion-color-medium);
+    display: flex; // Usar flexbox para alinear las columnas
+    ion-label {
+      flex: 1; // Distribuye el espacio equitativamente
+      padding: 10px 8px;
+      &:nth-child(3) { // Ajuste para la columna de Acción
+        text-align: right;
+      }
+    }
+  }
+
+  .student-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    border-bottom: 1px solid var(--ion-color-medium); // Líneas divisorias
+    display: flex; // Usar flexbox para alinear las columnas
+    align-items: center; // Centra verticalmente el contenido
+
+    ion-label {
+      flex: 1; // Distribuye el espacio equitativamente
+      padding: 10px 8px;
+    }
+
+    ion-buttons {
+      margin-inline-end: 0; // Elimina el margen por defecto de ion-buttons
+      ion-button {
+        --padding-start: 8px;
+        --padding-end: 8px;
+      }
+    }
+  }
+
+  .student-item:last-child {
+    border-bottom: none; // Elimina el borde inferior de la última fila
+  }
+}
+
+ion-button {
+  --border-radius: 8px; /* Aplica el borde redondeado a los botones */
+}
+
+// Estilos para el contenedor de la lista de estudiantes
+.students-list-container {
+  padding: 16px;
+  background-color: white; // Fondo blanco para la lista
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    text-align: center;
+    color: var(--ion-color-dark);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+  }
+
+  .students-list {
+    background: transparent; // Asegura que el fondo de la lista sea transparente para ver el contenedor
+    padding: 0; // Elimina el padding por defecto de ion-list
+  }
+
+  .list-header {
+    background-color: var(--ion-color-light-gray); // Fondo para el encabezado de la lista
+    font-weight: bold;
+    color: var(--ion-color-dark);
+    border-bottom: 1px solid var(--ion-color-medium);
+    display: flex; // Usar flexbox para alinear las columnas
+    ion-label {
+      flex: 1; // Distribuye el espacio equitativamente
+      padding: 10px 8px;
+      &:nth-child(3) { // Ajuste para la columna de Acción
+        text-align: right;
+      }
+    }
+  }
+
+  .student-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    border-bottom: 1px solid var(--ion-color-medium); // Líneas divisorias
+    display: flex; // Usar flexbox para alinear las columnas
+    align-items: center; // Centra verticalmente el contenido
+
+    ion-label {
+      flex: 1; // Distribuye el espacio equitativamente
+      padding: 10px 8px;
+    }
+
+    ion-buttons {
+      margin-inline-end: 0; // Elimina el margen por defecto de ion-buttons
+      ion-button {
+        --padding-start: 8px;
+        --padding-end: 8px;
+      }
+    }
+  }
+
+  .student-item:last-child {
+    border-bottom: none; // Elimina el borde inferior de la última fila
+  }
+
+  /* Estilos para los colores de las filas */
+  .preescolar-row {
+    --background: #fffacd; /* Amarillo claro */
+    // Puedes ajustar el color del texto si es necesario para el contraste
+    // --color: #000;
+  }
+
+  .primaria-row {
+    --background: #ffcccb; /* Rojo claro */
+    // --color: #000;
+  }
+
+  .bachillerato-row {
+    --background: #90ee90; /* Verde claro */
+    // --color: #000;
+  }
+}
+
+ion-button {
+  --border-radius: 8px; /* Aplica el borde redondeado a los botones */
+}
+
+/* Compensación para el toolbar del padre */
+ion-content.ion-padding-top-safe-area {
+  --padding-top: calc(var(--ion-safe-area-top, 0px) + var(--ion-toolbar-height, 56px));
+}
