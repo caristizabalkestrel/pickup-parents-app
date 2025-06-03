@@ -11,7 +11,7 @@ import { idCardOutline, lockClosedOutline, logInOutline, logoGoogle } from 'ioni
 import { AuthService } from 'src/app/core/auth/service/auth.service';
 import { LoadingService } from 'src/app/core/loading/loading.service';
 import { ToastService } from 'src/app/core/toast/toast.service';
-import { ParentProfile } from 'src/app/core/auth/models/parent-profile.model';
+import { ParentProfile } from 'src/app/core/models/parent-profile.model';
 import { SessionService } from 'src/app/core/session/session.service';
 import { LoadingOverlayComponent } from "src/app/shared/loading-overlay/loading-overlay.component";
 

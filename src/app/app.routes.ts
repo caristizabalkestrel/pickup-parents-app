@@ -7,19 +7,22 @@ export const routes: Routes = [
     path: 'home',
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
     canActivate: [AuthGuard],
+    data: { title: 'Pickup Parents' }, // Título por defecto para /home
     children: [
       {
-        path: '',
+        path: '', // Ruta por defecto para /home
         redirectTo: 'parets',
         pathMatch: 'full'
       },
       {
         path: 'students',
         loadComponent: () => import('./feature/students/students.page').then( m => m.StudentsPage),
+        data: { title: 'Registro de Estudiantes' } // Título para /home/students
       },
       {
         path: 'parets',
         loadComponent: () => import('./feature/parets/parets.page').then( m => m.ParetsPage),
+        data: { title: 'Recoger Alumnos' } // Título para /home/parets
       },
     ]
   },

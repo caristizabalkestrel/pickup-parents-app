@@ -1,34 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonMenu, IonMenuButton, IonList, IonItem, IonLabel, IonFooter, IonText, IonIcon, IonRouterOutlet } from '@ionic/angular/standalone';
-import { AuthService } from '../core/auth/service/auth.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
-import { SessionService } from '../core/session/session.service'; // Importar SessionService
-import { CommonModule } from '@angular/common'; // Necesario para directivas como *ngIf si se usan
+import { Subscription } from 'rxjs';
+
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonMenu, IonMenuButton, IonList, IonItem, IonLabel, IonFooter, IonText, IonBackButton, IonRouterOutlet, IonIcon } from '@ionic/angular/standalone';
+
 import { addIcons } from 'ionicons';
-import { menuOutline, personOutline, logOutOutline, schoolOutline, carOutline } from 'ionicons/icons'; // Importar iconos
+import { menuOutline, personOutline, logOutOutline, schoolOutline, carOutline, arrowBackOutline } from 'ionicons/icons';
+
+import { AuthService } from 'src/app/core/auth/service/auth.service';
+import { SessionService } from 'src/app/core/session/session.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonRouterOutlet, IonIcon,
+  imports: [IonIcon, IonRouterOutlet,
     IonButton, IonButtons, IonHeader, IonToolbar, IonTitle, IonContent,
     IonMenu, IonMenuButton, IonList, IonItem, IonLabel, IonFooter, IonText,
+    IonBackButton,
     RouterOutlet,
     CommonModule
   ],
 })
-export class HomePage implements OnInit {
-
+export class HomePage implements OnInit, OnDestroy {
   userName: string = 'Usuario';
+  showBackButton: boolean = false;
+  private routerSubscription: Subscription | undefined;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private sessionService: SessionService
+    private sessionService: SessionService,
   ) {
-    addIcons({ menuOutline, personOutline, logOutOutline, schoolOutline, carOutline });
+    addIcons({ menuOutline, personOutline, logOutOutline, schoolOutline, carOutline, arrowBackOutline });
   }
 
   ngOnInit() {
@@ -39,12 +45,19 @@ export class HomePage implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+
   /**
-   * Cierra la sesión del usuario y limpia los datos de la sesión.
+   * Maneja el evento de retroceso del botón.
+   * Si estamos en /home/parets o /home/students, navega a /login.
    */
   async logout() {
     await this.authService.logout();
-    this.sessionService.clearParentProfile(); // Limpiar datos de sesión al cerrar sesión
+    this.sessionService.clearParentProfile();
     this.router.navigateByUrl('/login');
   }
 
@@ -59,6 +72,7 @@ export class HomePage implements OnInit {
    * Navega a la página de "Recoger" (asumiendo que es la página de padres).
    */
   goToRecoger() {
-    this.router.navigateByUrl('/home/parets'); // Navega a la ruta 'parets'
+    this.router.navigateByUrl('/home/parets');
   }
+
 }

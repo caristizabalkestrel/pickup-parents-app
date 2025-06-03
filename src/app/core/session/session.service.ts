@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ParentProfile } from 'src/app/core/auth/models/parent-profile.model';
+import { ParentProfile } from 'src/app/core/models/parent-profile.model';
 
 @Injectable({
   providedIn: 'root'

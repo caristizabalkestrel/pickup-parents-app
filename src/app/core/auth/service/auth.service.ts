@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from '@angular/fire/auth';
 // Importaciones de Firestore
 import { Firestore, collection, query, where, getDocs, doc, setDoc, getDoc } from '@angular/fire/firestore';
-import { ParentProfile } from '../models/parent-profile.model';
+import { ParentProfile } from '../../models/parent-profile.model';
 
 @Injectable({
   providedIn: 'root',
